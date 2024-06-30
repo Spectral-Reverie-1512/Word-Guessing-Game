@@ -1,0 +1,110 @@
+#Players
+names = []
+
+def players():
+    global names
+    no = int(input("Enter number of players: "))
+    print()
+    names = []  
+    for i in range(no):
+        n = input("Enter name of player " + str(i) + ": ")
+        names.append(n)
+    print()
+    print("Player names are: ", names)
+    return no
+
+no = players()
+
+print()
+confirm = input('Enter "y" to confirm or "n" to type again: ')
+print()
+print()
+
+while confirm.lower() != "y":
+    no = players()
+    print()
+    confirm = input('Enter "y" to confirm or "n" to type again: ')
+    print()
+    print()
+
+
+#Rules
+
+words = ['RAINBOW', 'BICYCLE', 'UMBRELLA', 'DIAMOND', 'GUITAR', 'SUNSRISE', 'WATER', 'CONDITION', 'REVERSE', 'OCTOPUS']
+cities = ['LONDON', 'VENICE', 'BERLIN', 'PARIS', 'ATHENS', 'ROME', 'PRAGUE', 'AMSTERDAM', 'MADRID', 'VIENNA']
+countries = ['GREECE', 'ITALY', 'PORTUGAL', 'GERMANY', 'SWEDEN', 'SPAIN', 'POLAND', 'IRELAND', 'FINLAND', 'MONACO']
+
+print("Game Categories: ")
+print()
+
+print("1. Words ")
+print()
+
+print("2. Cities ")
+print()
+
+print("3. Countries ")
+print()
+
+choice = input("Enter number of category: ")
+
+categories = {
+    1: words,
+    2: cities,
+    3: countries
+}
+
+try:
+    choice = int(choice)  # Convert input to integer
+    selected = categories[choice]  # Access the category list based on user input
+    print()
+except ValueError:
+    print("Invalid input! Please enter a number.")
+    print()
+except KeyError:
+    print("Invalid category number! Please enter 1, 2, or 3.")
+    print()
+    
+def play_game():
+    word = random.choice(selected)
+
+    turns = 5
+    print("All Players get 5 turns in total") 
+    print()
+    guesses = ""
+    guessed_word = "_" * len(word)
+    
+    while turns > 0:
+        for player in names:
+            print(f"{player}, it's your turn!")
+            print()
+            print("Word to guess:", " ".join(guessed_word))
+            print()
+            guess = input("Guess a character: ").upper()
+            print()
+            print()
+            if guess in guesses:
+                print("You already guessed that letter!")
+                print()
+                print()
+            else:
+                guesses += guess
+                if guess in word:
+                    for index, char in enumerate(word):
+                        if char == guess:
+                            guessed_word = guessed_word[:index] + guess + guessed_word[index + 1:]
+                    if "_" not in guessed_word:
+                        print("Congratulations! You guessed the word:", word)
+                        print()
+                        return
+                else:
+                    turns -= 1
+                    print(f"Wrong guess! {turns} turns left.")
+                    print()
+                    print()
+                    if turns == 0:
+                        print("Game over! You ran out of turns.")
+                        print("The word was: ", word)
+                        print()
+                        return
+play_game()
